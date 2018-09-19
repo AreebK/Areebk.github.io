@@ -1,10 +1,3 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
-
 var img;
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
@@ -25,7 +18,7 @@ function draw() {
   rotateZ(frameCount * multiple);
   rotateX(frameCount * multiple);
   rotateY(frameCount * multiple);
-  texture(img);
+  texture(kden);
   box(80);
   pop();
 
@@ -34,7 +27,7 @@ function draw() {
   rotateZ(frameCount * multiple);
   rotateX(frameCount * multiple);
   rotateY(frameCount * multiple);
-  texture(img);
+  texture(kden);
   box(80);
   pop();
 
@@ -43,7 +36,7 @@ function draw() {
   rotateZ(frameCount * multiple);
   rotateX(frameCount * multiple);
   rotateY(frameCount * multiple);
-  texture(img);
+  texture(kden);
   box(80);
   pop();
 
@@ -52,7 +45,7 @@ function draw() {
   rotateZ(frameCount * 0.01);
   rotateX(frameCount * 0.01);
   rotateY(frameCount * 0.01);
-  texture(img);
+  texture(kden);
   box(80);
   pop();
 
@@ -61,7 +54,7 @@ function draw() {
   rotateZ(frameCount * 0.01);
   rotateX(frameCount * 0.01);
   rotateY(frameCount * 0.01);
-  texture(img);
+  texture(kden);
   box(80);
   pop();
 
