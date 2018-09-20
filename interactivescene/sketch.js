@@ -1,7 +1,8 @@
-var img;
+var kden;
+
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  img = loadImage("assets/kden.PNG");
+  kden = loadImage("assets/kden.PNG");
 }
 
 function draw() {
@@ -12,48 +13,48 @@ function draw() {
 
   ambientLight(60, 60, 60);
   pointLight(255, 255, 255, locX, locY, 100);
-  var multiple = random(1, 0.01))
+
 
   push();
-  rotateZ(frameCount * multiple);
-  rotateX(frameCount * multiple);
-  rotateY(frameCount * multiple);
+  rotateZ(frameCount * 0.1);
+  rotateX(frameCount * 0.1);
+  rotateY(frameCount * 0.1);
   texture(kden);
   box(80);
   pop();
 
   push();
   translate(-width / 4, -height / 4, 0);
-  rotateZ(frameCount * multiple);
-  rotateX(frameCount * multiple);
-  rotateY(frameCount * multiple);
+  rotateZ(frameCount * 0.1);
+  rotateX(frameCount * 0.1);
+  rotateY(frameCount * 0.1);
   texture(kden);
   box(80);
   pop();
 
   push();
   translate(width / 4, -height / 4, 0);
-  rotateZ(frameCount * multiple);
-  rotateX(frameCount * multiple);
-  rotateY(frameCount * multiple);
+  rotateZ(frameCount * 0.1);
+  rotateX(frameCount * 0.1);
+  rotateY(frameCount * 0.1);
   texture(kden);
   box(80);
   pop();
 
   push();
   translate(-width / 4, height / 4, 0);
-  rotateZ(frameCount * 0.01);
-  rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
+  rotateZ(frameCount * 0.1);
+  rotateX(frameCount * 0.1);
+  rotateY(frameCount * 0.1);
   texture(kden);
   box(80);
   pop();
 
   push();
   translate(width / 4, height / 4, 0);
-  rotateZ(frameCount * 0.01);
-  rotateX(frameCount * 0.01);
-  rotateY(frameCount * 0.01);
+  rotateZ(frameCount * 0.1);
+  rotateX(frameCount * 0.1);
+  rotateY(frameCount * 0.1);
   texture(kden);
   box(80);
   pop();
