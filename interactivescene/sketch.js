@@ -1,8 +1,17 @@
 var kden;
+let noise;
+
+function preload() {
+  noise = loadSound("assets/oof.mp3");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   kden = loadImage("assets/kden.PNG");
+}
+
+function mousePressed() {
+  noise.play()
 }
 
 function draw() {
@@ -14,7 +23,6 @@ function draw() {
   ambientLight(60, 60, 60);
   pointLight(255, 255, 255, locX, locY, 100);
 
-
   push();
   rotateZ(frameCount * 0.1);
   rotateX(frameCount * 0.1);
@@ -22,42 +30,5 @@ function draw() {
   texture(kden);
   box(80);
   pop();
-
-  push();
-  translate(-width / 4, -height / 4, 0);
-  rotateZ(frameCount * 0.1);
-  rotateX(frameCount * 0.1);
-  rotateY(frameCount * 0.1);
-  texture(kden);
-  box(80);
-  pop();
-
-  push();
-  translate(width / 4, -height / 4, 0);
-  rotateZ(frameCount * 0.1);
-  rotateX(frameCount * 0.1);
-  rotateY(frameCount * 0.1);
-  texture(kden);
-  box(80);
-  pop();
-
-  push();
-  translate(-width / 4, height / 4, 0);
-  rotateZ(frameCount * 0.1);
-  rotateX(frameCount * 0.1);
-  rotateY(frameCount * 0.1);
-  texture(kden);
-  box(80);
-  pop();
-
-  push();
-  translate(width / 4, height / 4, 0);
-  rotateZ(frameCount * 0.1);
-  rotateX(frameCount * 0.1);
-  rotateY(frameCount * 0.1);
-  texture(kden);
-  box(80);
-  pop();
-
 
 }
