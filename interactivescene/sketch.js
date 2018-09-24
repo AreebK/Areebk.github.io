@@ -1,4 +1,4 @@
-var kden;
+let kden;
 let noise;
 
 function preload() {
@@ -11,6 +11,11 @@ function setup() {
 }
 
 function mousePressed() {
+
+  noise.play();
+
+}
+
   noise.play()
 }
 
@@ -24,9 +29,9 @@ function draw() {
   pointLight(255, 255, 255, locX, locY, 100);
 
   push();
-  rotateZ(frameCount * 0.1);
-  rotateX(frameCount * 0.1);
-  rotateY(frameCount * 0.1);
+  rotateZ(frameCount * 0.01);
+  rotateX(frameCount * 0.01);
+  rotateY(frameCount * 0.01);
   texture(kden);
   box(80);
   pop();
