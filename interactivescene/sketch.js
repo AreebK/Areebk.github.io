@@ -1,5 +1,8 @@
 let kden;
 let noise;
+let x = windowWidth/2;
+let y = windowHeight/2;
+
 
 function preload() {
   noise = loadSound("assets/oof.mp3");
@@ -11,12 +14,9 @@ function setup() {
 }
 
 function mousePressed() {
-
-  noise.play();
-
-}
-
-  noise.play()
+  if (mouseX >= x && mouseX <= x+80 ){
+    noise.play()
+  }
 }
 
 function draw() {
