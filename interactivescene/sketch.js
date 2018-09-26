@@ -1,8 +1,18 @@
+// Interactive Scene
+// Areeb Khan
+// Wednesday, 26th. 2018
+//
+// Extra for Experts:
+// - I added an audio and image files to my project, and played around with 3D shapes and how they are made
+
 let kden;
+//Image File
 let noise;
+//Audio File
 let x, y;
 let widthCircle, heightCircle;
 let value1, value2, value3;
+// To change colors
 
 
 function preload() {
@@ -22,6 +32,7 @@ function setup() {
 }
 
 function mousePressed() {
+  //If pressed inside box, the noise will play
   if (mouseX >= x - 80 && mouseX <= x+80 && mouseY >= y -80 && mouseY <= y+80 ){
     noise.play();
   }
@@ -32,6 +43,7 @@ function draw() {
     var locX = mouseX - height / 2;
     var locY = mouseY - width / 2;
 
+    //make a sun like affect on the cube with the image
     ambientLight(60, 60, 60);
     pointLight(255, 255, 255, locX, locY, 100);
 
@@ -82,6 +94,7 @@ function draw() {
 }
 
 function keyPressed(){
+  //If the RGB Keys are pressed it will change colors on the shapes 
   if (keyCode === 82 || keyCode === 66 || keyCode === 71){
     value1 = random(255);
     value2 = random(255);
