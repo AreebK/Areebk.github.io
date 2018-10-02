@@ -5,28 +5,27 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 let boxSize;
-let filledwithblack;
-
-
+let isFilledWithBlack;
 
 function setup() {
-  createCanvas(600,600);
+  createCanvas(600, 600);
   boxSize = width/8;
-  filledwithblack = false;
+  isFilledWithBlack = false;
 }
 
 function draw() {
-  for (let i = 0; i < 8; i++){
-    for (let j = 0; j < 8; j++){
-      if (filledwithblack) {
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      if (isFilledWithBlack) {
         fill(0);
       }
       else {
         fill(255);
       }
-      rect(i * boxSize,j * boxSize ,boxSize,boxSize);
-      filledwithblack = !filledwithblack;
+      rect(i * boxSize, j * boxSize, boxSize, boxSize);
+      isFilledWithBlack = !isFilledWithBlack;
     }
-    filledwithblack = filledwithblack;
+    isFilledWithBlack = !isFilledWithBlack;
   }
+
 }
