@@ -4,41 +4,45 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-let dolphin;
-let greydolphin;
+
+let fish;
+let grayFish;
+
+function preload() {
+  fish = loadImage("assets/dolphin.jpeg");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  image(dolphin, 0, 0);
-  greydolphin = makeGreyScale(dolphin);
-}
-function preload() {
-  dolphin = loadImage("assets/dolphin.jpeg");
+  image(fish, 0, 0);
+  grayFish = makeGrayscale(fish);
+  image(grayFish, 0, 0);
 }
 
 function draw() {
+
 }
 
-function makeGreyScale(sourceImage) {
+function makeGrayscale(sourceImage) {
   let img = createImage(sourceImage.width, sourceImage.height);
 
-  sourceImage.loadPixels();
   img.loadPixels();
+  sourceImage.loadPixels();
 
-  for (let x = 0; x < img.width; x++){
-    for (let y = 0; y < img.height; y++) {
-      let p = sourceImage.get(x,y);
+  for (let x = 0; x < sourceImage.width; x++) {
+    for (let y = 0; y < sourceImage.height; y++) {
+      let p = sourceImage.get(x, y);
 
       let r = red(p);
       let g = green(p);
       let b = blue(p);
 
-      let average = (r + g + b) / 3;
+      let newPixel = color((r+g+b)/3, (r+g+b)/3, (r+g+b)/3);
 
-      let newPixel = color(average, average, average);
       img.set(x, y, newPixel);
     }
   }
+
   img.updatePixels();
   return img;
 }

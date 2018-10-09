@@ -1,3 +1,168 @@
+var grid_x;// = window.innerWidth / 3.;
+var grid_y;// = window.innerHeight/ 6.;
+var noughtChoicesBoxX = [];
+var noughtChoicesBoxY = [];
+var crossChoicesBoxX = [];
+var crossChoicesBoxY = [];
+
+
+var holdDrawing = false;
+var hasWon = false;
+var playersTurn = 1;
+var loc1 = [];
+var loc2 = [];
+var timer = 0;
+var choice = 0;
+// if 0, unoccupied, if 1 : nought, if -1: cross
+var game = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0
+};
+
+function setup() {
+    // we don't need a very high framerate
+    frameRate(10);
+    // setup a full screen canvas
+    createCanvas(screen.width, screen.height);
+}
+
+
+function draw() {
+    if (holdDrawing) {
+        if (hasWon) {
+            strokeWeight(10);
+            stroke(0, 255, 0);
+            line(loc1[0] + grid_x / 6., loc1[1] + grid_x / 6., loc2[0] + grid_x / 6., loc2[1] + grid_x / 6.);
+            messageBox("You lose", [255, 0, 0]);
+        } else {
+            messageBox("It's a draw!", [0, 0, 255]);
+        }
+        timer++;
+        if (timer > 10) {
+            timer = 0;
+            holdDrawing = false;
+        }
+        return;
+    }
+
+    grid_x = window.innerWidth / 3.;
+    grid_y = window.innerHeight / 6.;
+    background(95, 67, 165);
+
+    handleGame();
+    // Draw the tic tac toe grid
+    setupTicTacToeGrid();
+    if (playersTurn == 1) {
+        // Wherever the mouse hovers, offer the symbol there
+        drawObject(getMouseLocationQuadrant(mouseX, mouseY), choice, true);
+    }
+    // Draw the boardgame
+    drawBoard();
+
+    if (choice == 0) {
+        offerChoice();
+    }
+
+}
+
+function mouseReleased() {
+    if (holdDrawing) {
+        return;
+    }
+    if (choice !== 0) {
+        if (playersTurn == 1) {
+            quadrant = getMouseLocationQuadrant(mouseX, mouseY);
+            if (isQuadrantEmpty(quadrant)) {
+                drawObject(quadrant, choice, false);
+                game[quadrant] = choice;
+                playersTurn = -1;
+            }
+        }
+    } else {
+        if (mouseX < noughtChoicesBoxX[1] && mouseX > noughtChoicesBoxX[0] &&
+            mouseY < noughtChoicesBoxY[1] && mouseY > noughtChoicesBoxY[0]) {
+            choice = 1;
+
+        }
+        if (mouseX < crossChoicesBoxX[1] && mouseX > crossChoicesBoxX[0] &&
+            mouseY < crossChoicesBoxY[1] && mouseY > crossChoicesBoxY[0]) {
+            choice = -1;
+        }
+    }
+
+}
+
+function messageBox(dispStr, text_colour) {
+    strokeWeight(1);
+    fill(255);
+    rect(1.25 * grid_x, 0.25 * grid_y, grid_x / 2., grid_y / 2.);
+    fill(text_colour[0], text_colour[1], text_colour[2]);
+    stroke(0);
+    textSize(30);
+    text(dispStr, 1.25 * grid_x + grid_x / 9., 0.25 * grid_y + grid_y / 3.);
+}
+
+function offerChoice() {
+    strokeWeight(1);
+    fill(255);
+    var innerX = 1.15 * grid_x;
+    var innerY = grid_y + grid_x / 6.;
+    var widthX = 2 * grid_x / 3;
+    var widthY = 2 * grid_x / 3;
+    rect(innerX, innerY, widthX, widthY);
+
+    noughtChoicesBoxX = [innerX + 0.1 * widthX, innerX + 0.1 * widthX + (widthX / 2 - 0.125 * widthX)];
+    noughtChoicesBoxY = [innerY + 0.1 * widthY, innerY + 0.1 * widthY + (0.8 * widthY)];
+
+    crossChoicesBoxX = [innerX + 0.5 * widthX, innerX + 0.5 * widthX + (widthX / 2 - 0.125 * widthX)];
+    crossChoicesBoxY = [innerY + 0.1 * widthY, innerY + 0.1 * widthY + (0.8 * widthY)];
+
+    ellipseMode(CORNER);
+    strokeWeight(10);
+    stroke(0, 122, 0);
+    noFill();
+    ellipse(noughtChoicesBoxX[0] + 10, noughtChoicesBoxY[0] + 0.25 * (noughtChoicesBoxY[1] - noughtChoicesBoxY[0]) + 10,
+        noughtChoicesBoxX[1] - noughtChoicesBoxX[0] - 20);
+
+    strokeWeight(10);
+    stroke(122, 0, 0);
+    line(crossChoicesBoxX[0] + 10, crossChoicesBoxY[0] + 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]) + 10,
+        crossChoicesBoxX[1] - 10, crossChoicesBoxY[1] - 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]) - 20);
+    line(crossChoicesBoxX[1] - 10, crossChoicesBoxY[0] + 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]) + 10,
+        crossChoicesBoxX[0] + 10, crossChoicesBoxY[1] - 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]) - 20);
+
+    if (mouseX < noughtChoicesBoxX[1] && mouseX > noughtChoicesBoxX[0] &&
+        mouseY < noughtChoicesBoxY[1] && mouseY > noughtChoicesBoxY[0]) {
+        noStroke();
+        fill(0, 255, 0, 130);
+        rect(noughtChoicesBoxX[0], noughtChoicesBoxY[0] + 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]),
+            noughtChoicesBoxX[1] - noughtChoicesBoxX[0], noughtChoicesBoxX[1] - noughtChoicesBoxX[0]);
+    }
+    if (mouseX < crossChoicesBoxX[1] && mouseX > crossChoicesBoxX[0] &&
+        mouseY < crossChoicesBoxY[1] && mouseY > crossChoicesBoxY[0]) {
+        noStroke();
+        fill(0, 255, 0, 130);
+        rect(crossChoicesBoxX[0], crossChoicesBoxY[0] + 0.25 * (crossChoicesBoxY[1] - crossChoicesBoxY[0]),
+            noughtChoicesBoxX[1] - noughtChoicesBoxX[0], noughtChoicesBoxX[1] - noughtChoicesBoxX[0]);
+    }
+    strokeWeight(1);
+    noStroke();
+    fill(0);
+    textSize(30);
+    text("Pick one!", innerX + widthX * 0.3, innerY + widthY * 0.15);
+    textSize(20);
+    //text("(you'll take turns going first)", innerX + widthX * 0.1, innerY + widthY * 0.15 + (crossChoicesBoxY[1] - crossChoicesBoxY[0]));
+
+
+}
+
 function getMouseLocationQuadrant(mouseX, mouseY) {
     // check if actually inside the grid
     if (mouseX < grid_x || mouseX > 2 * grid_x ||
@@ -67,6 +232,20 @@ function getGameState() {
 function scoreGame(potentialGame, depth) {
     // One of the most important functions of the Minimax algorithm.
 
+    // This looks at a given board game (not necessarily the one in play)
+    // and returns how good that board is for the computer, as follows:
+
+    // The game is not finished             :   0
+    // The game is a tie                    :   0
+    // The computer player has 3 in a row   :  10
+    // The human player has 3 in a row      : -10
+
+    // The board is :
+    // 0 | 1 | 2
+    // ----------
+    // 3 | 4 | 5
+    // ----------
+    // 6 | 7 | 8
     // So each of these arrays corresponds to either a row, col or diagonal.
     var winStates = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
@@ -222,7 +401,136 @@ function getAvailableMoves(potentialGame) {
 }
 
 
+function resetGame() {
+    game = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0
+    };
+}
 
+
+function getMinIndex(arr) {
+    var currMin = 1e10;
+    var currIndex = -1;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] < currMin || currIndex === -1) {
+            currMin = arr[i];
+            currIndex = i;
+        }
+    }
+    return currIndex;
+}
+
+function getMaxIndex(arr) {
+    var currMax = -1e10;
+    var currIndex = -1;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] > currMax || currIndex === -1) {
+            currMax = arr[i];
+            currIndex = i;
+        }
+    }
+    return currIndex;
+}
+
+function isFinished() {
+    if (checkRows() || checkCols() || checkDiags()) {
+        holdDrawing = true;
+        hasWon = true;
+        return true;
+    }
+
+    hasWon = false;
+    var keys = Object.keys(game);
+    for (var quadCheck = 0; quadCheck < keys.length; quadCheck++) {
+        if (game[keys[quadCheck]] == 0) {
+            return false;
+        }
+    }
+    holdDrawing = true;
+    return true;
+}
+
+function checkRows() {
+    var locations = [0, 3, 6];
+    for (var i = 0; i < locations.length; i++) {
+        if (Math.abs(game[locations[i]] + game[locations[i] + 1] + game[locations[i] + 2]) == 3) {
+            loc1 = getQuadrantTopLeft(locations[i]);
+            loc2 = getQuadrantTopLeft(locations[i] + 2);
+            return true;
+        }
+    }
+    return false;
+}
+
+function checkCols() {
+    var locations = [0, 1, 2];
+    for (var i = 0; i < locations.length; i++) {
+        if (Math.abs(game[locations[i]] + game[locations[i] + 3] + game[locations[i] + 6]) == 3) {
+            loc1 = getQuadrantTopLeft(locations[i]);
+            loc2 = getQuadrantTopLeft(locations[i] + 6);
+            return true;
+        }
+    }
+    return false;
+}
+
+function checkDiags() {
+    var locations = [0, 2];
+    for (var i = 0; i < locations.length; i++) {
+        if (Math.abs(game[locations[i]] + game[4] + game[8 - locations[i]]) == 3) {
+            loc1 = getQuadrantTopLeft(locations[i]);
+            loc2 = getQuadrantTopLeft(8 - locations[i]);
+            return true;
+        }
+    }
+    return false;
+}
+
+function drawObject(quadrant, whichObject, checkOverlap) {
+    if (checkOverlap && !isQuadrantEmpty(quadrant)) {
+        return;
+    }
+    if (whichObject == 1) {
+        drawNought(quadrant);
+    } else if (whichObject == -1) {
+        drawCross(quadrant);
+    }
+}
+
+function drawCross(quadrant) {
+    if (quadrant !== -1) {
+        var crossTopLeft = getQuadrantTopLeft(quadrant);
+        var crossTopLeftX = crossTopLeft[0] + grid_x / 18.;
+        var crossTopLeftY = crossTopLeft[1] + grid_x / 18.;
+        var innerWidth = (grid_x / 3) * 4 / 6.;
+        strokeWeight(10);
+        stroke(122, 0, 0);
+        line(crossTopLeftX, crossTopLeftY + innerWidth, crossTopLeftX + innerWidth, crossTopLeftY);
+        line(crossTopLeftX, crossTopLeftY, crossTopLeftX + innerWidth, crossTopLeftY + innerWidth);
+    }
+}
+
+function drawNought(quadrant) {
+    if (quadrant !== -1) {
+        var crossTopLeft = getQuadrantTopLeft(quadrant);
+        var crossTopLeftX = crossTopLeft[0] + grid_x / 18.;
+        var crossTopLeftY = crossTopLeft[1] + grid_x / 18.;
+        var innerWidth = (grid_x / 3) * 4 / 6.;
+        ellipseMode(CORNER);
+        strokeWeight(10);
+        stroke(0, 122, 0);
+        noFill();
+        ellipse(crossTopLeftX, crossTopLeftY, innerWidth, innerWidth);
+    }
+}
 
 function setupTicTacToeGrid() {
     strokeWeight(10);
@@ -239,7 +547,5 @@ function drawBoard() {
     var keys = Object.keys(game);
     for (var i = 0; i < keys.length; i++) {
         drawObject(keys[i], game[keys[i]], false);
-      }
-  }
-
+    }
 }
