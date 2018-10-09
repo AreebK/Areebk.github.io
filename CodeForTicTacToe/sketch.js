@@ -193,7 +193,7 @@ function isQuadrantEmpty(quadrant) {
 
 function handleGame() {
     if (playersTurn !== 1) {
-        messageBox("Thinking...", [0, 0, 155]);
+        messageBox("Thinking", [0, 0, 155]);
         if (timer > 5) {
             getNextMove();
             timer = 0;
