@@ -5,44 +5,29 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let fish;
-let grayFish;
-
-function preload() {
-  fish = loadImage("assets/dolphin.jpeg");
-}
+let dropdown;
+let console;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  image(fish, 0, 0);
-  grayFish = makeGrayscale(fish);
-  image(grayFish, 0, 0);
+  dropdown = createSelect(); // or create dropdown?
+  dropdown.option("name 1","value1");
+  dropdown.option("name 2","value2");
+  dropdown.option("name 3","value3");
+  dropdown.option("pear","pear");
+  dropdown.select("value3");
+
+  dropdown.changed(mySelectEvent);
 }
 
 function draw() {
-
+  if (dropdown.selected === "pear") {
+    ellipse(0, 0, 100, 100);
+  }
 }
 
-function makeGrayscale(sourceImage) {
-  let img = createImage(sourceImage.width, sourceImage.height);
-
-  img.loadPixels();
-  sourceImage.loadPixels();
-
-  for (let x = 0; x < sourceImage.width; x++) {
-    for (let y = 0; y < sourceImage.height; y++) {
-      let p = sourceImage.get(x, y);
-
-      let r = red(p);
-      let g = green(p);
-      let b = blue(p);
-
-      let newPixel = color((r+g+b)/3, (r+g+b)/3, (r+g+b)/3);
-
-      img.set(x, y, newPixel);
-    }
+function mySelectEvent() {
+  let selected = this.selected();
+  if (selected === "pear") {
+    console.log("it's a pear!");
   }
-
-  img.updatePixels();
-  return img;
 }

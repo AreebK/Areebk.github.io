@@ -16,21 +16,13 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(400,400);
   background("yellow");
-  button = createButton("Simple Button");
-  button.position(10, 300);
-  button.mousePressed(clickFunction);
-
-  //noLoop();
 }
 
 function draw() {
-  x = random(300);
-  y = random(4);
-  if (mouseIsPressed){
-    cat_createimg.position(x,y); //loads GIF correctly
-  }
+  cat_createimg.position(0,0);
+  //loads GIF correctly;
 }
 
 
