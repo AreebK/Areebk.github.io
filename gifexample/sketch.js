@@ -8,7 +8,6 @@
 //All Varibales
 let cat_loadimg, cat_createimg;
 let x,y;
-let button;
 
 function preload(){
   cat_loadimg = loadImage ("assets/kitty.gif");
@@ -23,9 +22,4 @@ function setup() {
 function draw() {
   cat_createimg.position(0,0);
   //loads GIF correctly;
-}
-
-
-function clickFunction(){
-  background(random(255));
 }
