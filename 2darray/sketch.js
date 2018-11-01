@@ -49,8 +49,8 @@ function createRandom2DArray(cols, rows) {
 
 
 function mousePressed(){
-  let x = floor(mouseX/mouseY);
-  let y = floor(mouseY/mouseX);
+  let x = floor(mouseX/cellSize);
+  let y = floor(mouseY/cellSize);
 
   if (grid[y][x] === 1){
     grid[y][x] = 0;
