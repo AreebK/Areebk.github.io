@@ -9,41 +9,35 @@ let maze;
 let cols = 15;
 let rows = 15;
 let cellSize;
-let brick;
-let stone;
-let diamond;
-let state = 0;
-let start;
-let winW;
-let winH;
-
+let stone, diamond, brick, player;
+let state;
+let winW, winH;
+let playerX, playerY;
+let ycords, xcords;
+let movement;
 
 function preload(){
   maze = loadStrings("assets/maze1.txt");
   brick = loadImage("assets/brick.png");
   stone = loadImage("assets/stone.jpg");
   diamond = loadImage("assets/diamond.png");
-  start = loadImage("assets/startscreen.png");
+  player = loadimage("assets/steve/jpg");
 }
 
 function setup() {
-  if (state === 0){
-    createCanvas(windowWidth, windowHeight);
-  }
-  else if (state === 1 && windowWidth > windowHeight){
+  if (windowWidth > windowHeight){
     createCanvas(windowHeight, windowHeight);
-    winH = windowHeight;
   }
-  else if (state === 1 && windowHeight > windowWidth) {
+  else if (windowWidth < windowHeight) {
     createCanvas(windowWidth, windowWidth);
-    winW = windowWidth;
   }
-
-
+  state = "mazeStart";
   rows = maze[0].length;
   cols = maze[0].length;
   cellSize = width / cols;
   cleanUpMaze();
+  playerX = cellSize;
+  playerY = cellSize;
 }
 
 function cleanUpMaze() {
@@ -53,36 +47,40 @@ function cleanUpMaze() {
 }
 
 function draw() {
+  xcords = floor(playerX / cellSize);
+  ycords = floor(playerY / cellSize);
   background(255);
-  startScreen();  //creates a start screen in which you will have to click to make the state change to create the Maze
   drawMaze();   // only created once the start screen is clicked the state has successfully changed
-  keyTyped();
+  gameOver();  // creates a gameover screen that can let you back into the maze if you follow the instructions
+  playerCreate();   // creates player
 }
 
-function startScreen() {
+function playerCreate() {
+  if (state === "mazeStart") {
+    // will draw chacter which will be able to be controlled in other commands
+    image(player, playerX, playerY, cellSize, cellSize);
+  }
+}
+
+function gameOver() {
   textAlign(CENTER);
-  if (state === 0) {
+  if (state === "dead") {
     background(0);
-    textSize(500);
+    textSize(1000);
     fill(0, 255, 0);
-    text("START", width/ 2, height / 2 - 50);
+    text("GAME OVER", width/ 2, height / 2 - 100);
     fill(255);
-    textSize(200);
-    text("To begin press S", width/2, height /2 + 200);
-
+    textSize(400);
+    text("To restart press 'p''" , width/2, height /2 + 400);
+    if (key === "p" || key === "P") {
+      window.location.reload(true); // reloads the page in order to play the maze again
+    }
   }
 }
 
-function keyTyped(){
-  if (key === "s" || key === "S"){
-    state === 1;
-    return state;
-  }
-
-}
 
 function drawMaze() {
-  if (state === 1){
+  if (state === "mazeStart"){
     for (let i = 0; i < cols; i++){
       for (let j = 0; j < rows; j++){
         if (maze[j][i] === "0"){
