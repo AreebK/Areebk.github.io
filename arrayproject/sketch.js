@@ -21,7 +21,7 @@ function preload(){
   brick = loadImage("assets/brick.png");
   stone = loadImage("assets/stone.jpg");
   diamond = loadImage("assets/diamond.png");
-  player = loadimage("assets/steve/jpg");
+  player = loadImage("assets/steve/jpg");
 }
 
 function setup() {
