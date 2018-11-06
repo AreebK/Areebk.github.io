@@ -21,7 +21,7 @@ function preload(){
   brick = loadImage("assets/brick.png");
   stone = loadImage("assets/stone.jpg");
   diamond = loadImage("assets/diamond.png");
-  player = loadImage("assets/steve/jpg");
+  player = loadImage("assets/steve.jpg");
 }
 
 function setup() {
@@ -52,6 +52,7 @@ function draw() {
   background(255);
   drawMaze();   // only created once the start screen is clicked the state has successfully changed
   gameOver();  // creates a gameover screen that can let you back into the maze if you follow the instructions
+  movePlayer(); // base movement for the player
   playerCreate();   // creates player
 }
 
@@ -62,7 +63,32 @@ function playerCreate() {
   }
 }
 
+function movePlayer() {
+  if (state === "mazeStart"){
+    let areeb = 0;
+  }
+}
+
+function keyIsPressed() {
+  // Sends message to the movePlayer function so the player can move
+  if (state === "mazeStart") {
+    if (key === "s" || key === "S") {
+      movement = "Down";
+    }
+    else if (key === "w" || key === "W") {
+      movement = "Up";
+    }
+    else if (key === "a" || key === "A"){
+      movement = "Left";
+    }
+    else if (key === "d" || key === "D"){
+      movement = "Right";
+    }
+  }
+}
+
 function gameOver() {
+  //GameOver Screen displays
   textAlign(CENTER);
   if (state === "dead") {
     background(0);
@@ -73,7 +99,7 @@ function gameOver() {
     textSize(400);
     text("To restart press 'p''" , width/2, height /2 + 400);
     if (key === "p" || key === "P") {
-      window.location.reload(true); // reloads the page in order to play the maze again
+      window.location.reload(true); // When the Key p is pressed the page reloads letting you play the maze again
     }
   }
 }
@@ -86,17 +112,17 @@ function drawMaze() {
         if (maze[j][i] === "0"){
           stroke(0);
           fill(255);
-          image(stone,i * cellSize,j* cellSize, cellSize, cellSize);
+          image(stone,i * cellSize,j* cellSize, cellSize, cellSize); // creates the floor texture
         }
         else if (maze[j][i] === "1") {
           stroke(0);
           fill(0);
-          image(brick,i * cellSize,j* cellSize, cellSize, cellSize);
+          image(brick,i * cellSize,j* cellSize, cellSize, cellSize); // creates the wall texture
         }
         else if (maze[j][i] === "2") {
           stroke(0);
           fill(0);
-          image(diamond,i * cellSize,j* cellSize, cellSize, cellSize);
+          image(diamond,i * cellSize,j* cellSize, cellSize, cellSize); // creates the lock where when you are on it you will go to another maze
         }
       }
     }
