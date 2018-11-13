@@ -15,6 +15,7 @@ let winW, winH;
 let playerX, playerY;
 let ycords, xcords;
 let movement = "Still";
+let rateOfSpeed;
 
 function preload(){
   maze1 = loadStrings("assets/maze1.txt");
@@ -38,6 +39,7 @@ function setup() {
   cleanUpmaze1();
   playerX = cellSize;
   playerY = cellSize;
+  rateOfSpeed = 25;
 }
 
 function cleanUpmaze1() {
@@ -65,60 +67,52 @@ function playerCreate() {
 
 function movePlayer() {
   if (state === "maze1Start"){
-    if (movement === "Up") {
-      if (maze1[ycords - 1][xcords] === "1") {
-        playerY = playerY + cellSize;
-        movement === "Still";
+    if (frameCount % rateOfSpeed === 0) {
+      if (movement === "Up") {
+        if (playerY <= 738 || maze1[ycords - 1][xcords] === "1") {
+          playerY += cellSize;
+        }
       }
-      playerY = playerY - cellSize;
-      movement === "Still";
-    }
-    if (movement === "Down") {
-      if (maze1[ycords+1][xcords] === "1"){
-        playerY = playerY - cellSize;
-        movement === "Still";
+
+      if (movement === "Down") {
+        if (playerY >= 738 || maze1[ycords+1][xcords] === "1"){
+          playerY = playerY - cellSize;
+        }
       }
-      playerY = playerY + cellSize;
-      movement === "Still";
-    }
-    if (movement === "Left") {
-      if (maze1[ycords][xcords-1] === "1") {
-        playerX = playerX + cellSize;
-        movement === "Still";
+
+      if (movement === "Left") {
+        if (playerX <= 738 || maze1[ycords][xcords-1] === "1") {
+          playerX += cellSize;
+        }
       }
-      playerX = playerX - cellSize;
-      movement === "Still";
-    }
-    if (movement === "Right") {
-      if (maze1[ycords][xcords+1] === "1") {
-        playerX = playerX - cellSize;
-        movement === "Still";
+
+      if (movement === "Right") {
+        if (playerX >= 738 || maze1[ycords][xcords+1] === "1") {
+          playerX -= cellSize;
+        }
       }
-      playerX = playerX + cellSize;
-      movement === "Still";
     }
   }
-}
+
 
 function keyTyped() {
   // Sends message to the movePlayer function so the player can move
   if (state === "maze1Start") {
-    if (movement === "Still"){
-      if (key === "s" || key === "S") {
-        movement = "Down";
-      }
-      else if (key === "w" || key === "W") {
-        movement = "Up";
-      }
-      else if (key === "a" || key === "A"){
-        movement = "Left";
-      }
-      else if (key === "d" || key === "D"){
-        movement = "Right";
-      }
+    if (key === "s" || key === "S") {
+      movement = "Down";
+    }
+    else if (key === "w" || key === "W") {
+      movement = "Up";
+    }
+    else if (key === "a" || key === "A"){
+      movement = "Left";
+    }
+    else if (key === "d" || key === "D"){
+      movement = "Right";
     }
   }
 }
+
 
 function gameOver() {
   //GameOver Screen displays
