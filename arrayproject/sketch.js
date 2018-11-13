@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let maze;
+let maze1;
 let cols = 15;
 let rows = 15;
 let cellSize;
@@ -14,10 +14,10 @@ let state;
 let winW, winH;
 let playerX, playerY;
 let ycords, xcords;
-let movement;
+let movement = "Still";
 
 function preload(){
-  maze = loadStrings("assets/maze1.txt");
+  maze1 = loadStrings("assets/maze1.txt");
   brick = loadImage("assets/brick.png");
   stone = loadImage("assets/stone.jpg");
   diamond = loadImage("assets/diamond.png");
@@ -31,18 +31,18 @@ function setup() {
   else if (windowWidth < windowHeight) {
     createCanvas(windowWidth, windowWidth);
   }
-  state = "mazeStart";
-  rows = maze[0].length;
-  cols = maze[0].length;
+  state = "maze1Start";
+  rows = maze1[0].length;
+  cols = maze1[0].length;
   cellSize = width / cols;
-  cleanUpMaze();
+  cleanUpmaze1();
   playerX = cellSize;
   playerY = cellSize;
 }
 
-function cleanUpMaze() {
-  for (let i=0; i < maze.length; i++) {
-    maze[i] = maze[i].split("");  //turns it into a 2d array
+function cleanUpmaze1() {
+  for (let i=0; i < maze1.length; i++) {
+    maze1[i] = maze1[i].split("");  //turns it into a 2d array
   }
 }
 
@@ -50,39 +50,72 @@ function draw() {
   xcords = floor(playerX / cellSize);
   ycords = floor(playerY / cellSize);
   background(255);
-  drawMaze();   // only created once the start screen is clicked the state has successfully changed
-  gameOver();  // creates a gameover screen that can let you back into the maze if you follow the instructions
+  drawmaze1();   // only created once the start screen is clicked the state has successfully changed
+  gameOver();  // creates a gameover screen that can let you back into the maze1 if you follow the instructions
   movePlayer(); // base movement for the player
   playerCreate();   // creates player
 }
 
 function playerCreate() {
-  if (state === "mazeStart") {
+  if (state === "maze1Start") {
     // will draw chacter which will be able to be controlled in other commands
-    image(player, playerX, playerY, cellSize, cellSize);
+    image(player, playerX - cellSize , playerY - cellSize, cellSize, cellSize);
   }
 }
 
 function movePlayer() {
-  if (state === "mazeStart"){
-    let areeb = 0;
+  if (state === "maze1Start"){
+    if (movement === "Up") {
+      if (maze1[ycords - 1][xcords] === "1") {
+        playerY = playerY + cellSize;
+        movement === "Still";
+      }
+      playerY = playerY - cellSize;
+      movement === "Still";
+    }
+    if (movement === "Down") {
+      if (maze1[ycords+1][xcords] === "1"){
+        playerY = playerY - cellSize;
+        movement === "Still";
+      }
+      playerY = playerY + cellSize;
+      movement === "Still";
+    }
+    if (movement === "Left") {
+      if (maze1[ycords][xcords-1] === "1") {
+        playerX = playerX + cellSize;
+        movement === "Still";
+      }
+      playerX = playerX - cellSize;
+      movement === "Still";
+    }
+    if (movement === "Right") {
+      if (maze1[ycords][xcords+1] === "1") {
+        playerX = playerX - cellSize;
+        movement === "Still";
+      }
+      playerX = playerX + cellSize;
+      movement === "Still";
+    }
   }
 }
 
-function keyIsPressed() {
+function keyTyped() {
   // Sends message to the movePlayer function so the player can move
-  if (state === "mazeStart") {
-    if (key === "s" || key === "S") {
-      movement = "Down";
-    }
-    else if (key === "w" || key === "W") {
-      movement = "Up";
-    }
-    else if (key === "a" || key === "A"){
-      movement = "Left";
-    }
-    else if (key === "d" || key === "D"){
-      movement = "Right";
+  if (state === "maze1Start") {
+    if (movement === "Still"){
+      if (key === "s" || key === "S") {
+        movement = "Down";
+      }
+      else if (key === "w" || key === "W") {
+        movement = "Up";
+      }
+      else if (key === "a" || key === "A"){
+        movement = "Left";
+      }
+      else if (key === "d" || key === "D"){
+        movement = "Right";
+      }
     }
   }
 }
@@ -99,33 +132,33 @@ function gameOver() {
     textSize(400);
     text("To restart press 'p''" , width/2, height /2 + 400);
     if (key === "p" || key === "P") {
-      window.location.reload(true); // When the Key p is pressed the page reloads letting you play the maze again
+      window.location.reload(true); // When the Key p is pressed the page reloads letting you play the maze1 again
     }
   }
 }
 
 
-function drawMaze() {
-  if (state === "mazeStart"){
+function drawmaze1() {
+  if (state === "maze1Start"){
     for (let i = 0; i < cols; i++){
       for (let j = 0; j < rows; j++){
-        if (maze[j][i] === "0"){
+        if (maze1[j][i] === "0"){
           stroke(0);
           fill(255);
           image(stone,i * cellSize,j* cellSize, cellSize, cellSize); // creates the floor texture
         }
-        else if (maze[j][i] === "1") {
+        else if (maze1[j][i] === "1") {
           stroke(0);
           fill(0);
           image(brick,i * cellSize,j* cellSize, cellSize, cellSize); // creates the wall texture
         }
-        else if (maze[j][i] === "2") {
+        else if (maze1[j][i] === "2") {
           stroke(0);
           fill(0);
-          image(diamond,i * cellSize,j* cellSize, cellSize, cellSize); // creates the lock where when you are on it you will go to another maze
+          image(diamond,i * cellSize,j* cellSize, cellSize, cellSize); // creates the lock where when you are on it you will go to another maze1
         }
       }
     }
-    return drawMaze;
+    return drawmaze1;
   }
 }
