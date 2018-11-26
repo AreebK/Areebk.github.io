@@ -69,31 +69,35 @@ function movePlayer() {
   if (state === "maze1Start"){
     if (frameCount % rateOfSpeed === 0) {
       if (movement === "Up") {
-        if (playerY <= 738 || maze1[ycords - 1][xcords] === "1") {
+        if (playerY <= 1000 || maze1[ycords - 1][xcords] === "1") {
           playerY += cellSize;
         }
+        playerY -= cellSize;
       }
 
       if (movement === "Down") {
-        if (playerY >= 738 || maze1[ycords+1][xcords] === "1"){
-          playerY = playerY - cellSize;
+        if (playerY >= 1000 || maze1[ycords+1][xcords] === "1"){
+          playerY -= cellSize;
         }
+        playerY += cellSize;
       }
 
       if (movement === "Left") {
-        if (playerX <= 738 || maze1[ycords][xcords-1] === "1") {
+        if (playerX <= 1000 || maze1[ycords][xcords-1] === "1") {
           playerX += cellSize;
         }
+        playerX -= cellSize;
       }
 
       if (movement === "Right") {
         if (playerX >= 738 || maze1[ycords][xcords+1] === "1") {
           playerX -= cellSize;
         }
+        playerX += cellSize;
       }
     }
   }
-
+}
 
 function keyTyped() {
   // Sends message to the movePlayer function so the player can move
