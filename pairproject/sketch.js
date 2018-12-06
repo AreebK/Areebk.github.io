@@ -51,7 +51,7 @@ function setup() {
   jokeshootsound.setVolume(0.5);
   jokehitsound.setVolume(0.5);
   jokediesound.setVolume(0.5);
-  // jokeback.loop(); // The Background music ("As of now cannot function unless uncommented")
+  jokeback.loop(); // The Joke Background music ("As of now cannot function unless you uncomment this loop and comment out the background loop")       
 }
 
 
@@ -71,64 +71,64 @@ function draw() {
   }
 
   mainMenu();
-  hoverPlay = collidePointRect(mouseX, mouseY, 400, 220, 1600/2 - 100, 790/4 - 33.34); //
-  hoverControls = collidePointRect(mouseX, mouseY, 575, 500.3334, 350, 175/2); //
-  hoverBackControl = collidePointRect(mouseX, mouseY, 100, 665, 175, 100); //
-  hoverSecret = collidePointRect(mouseX, mouseY, 0, 0, 10, 10); //
-  hoverYes = collidePointRect(mouseX, mouseY, 400, 220, 1600/2 - 100, 790/4 - 33.34); //
-  hoverNo = collidePointRect(mouseX, mouseY, 575, 500.3334, 1600/2 - 100, 790/4 - 33.34); //
+  hoverPlay = collidePointRect(mouseX, mouseY, 400, 220, 1600/2 - 100, 790/4 - 33.34); // Sets region to click on the 2D collide Function
+  hoverControls = collidePointRect(mouseX, mouseY, 575, 500.3334, 350, 175/2); // Sets region to click on the 2D collide Function
+  hoverBackControl = collidePointRect(mouseX, mouseY, 100, 665, 175, 100); // Sets region to click on the 2D collide Function
+  hoverSecret = collidePointRect(mouseX, mouseY, 0, 0, 10, 10); // Sets region to click on the 2D collide Function
+  hoverYes = collidePointRect(mouseX, mouseY, 400, 220, 1600/2 - 100, 790/4 - 33.34); // Sets region to click on the 2D collide Function
+  hoverNo = collidePointRect(mouseX, mouseY, 575, 500.3334, 1600/2 - 100, 790/4 - 33.34); // Sets region to click on the 2D collide Function
 }
 
 function mainMenu() {
   if (state === "MainMenu") {
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillStart = controlStart();
     fill(fillStart);
     rect(400, 220, 1600/2 - 100, 790/4 - 33.34);
-    image(playimg, 400 + 215, 220 + 40, 1600/6, 790/7 );
+    image(playimg, 400 + 215, 220 + 40, 1600/6, 790/7 ); // Image Files that displays what button does
     pop();
 
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillControl = controlFill();
     fill(fillControl);
     rect(575, 500.3334, 350, 175/2);
-    image(controlimg, 575 + 60.5, 500.3334 + 20, 350/1.5, 175/3);
+    image(controlimg, 575 + 60.5, 500.3334 + 20, 350/1.5, 175/3); // Image Files that displays what button does
     pop();
 
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillSecret = controlSecret();
     fill(fillSecret);
     rect(0, 0, 10, 10);
     pop();
   }
   else if (state === "controlSettings") {
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillBack = backFill();
     fill(fillBack);
     rect(100, 665, 175, 65);
-    image(backimg, 100 + 30.5, 665 + 15, 115, 35);
+    image(backimg, 100 + 30.5, 665 + 15, 115, 35); // Image Files that displays what button does
     pop();
   }
   else if (state === "secretMenu") {
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillBack = backFill();
     fill(fillBack);
     rect(100, 665, 175, 65);
-    image(backimg, 100 + 30.5, 665 + 15, 115, 35);
+    image(backimg, 100 + 30.5, 665 + 15, 115, 35); // Image Files that displays what button does
     pop();
 
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillYes = controlYes();
     fill(fillYes);
     rect(500, 220, 1600/2 - 300, 790/4 - 33.34);
-    image(noimg, 630, 240, 1600/3 - 275, 790/5 - 25);
+    image(noimg, 630, 240, 1600/3 - 275, 790/5 - 25); // Image Files that displays what button does (Since this is an easteregg we meant to have them switched for a confusing time for the player)
     pop();
 
-    push();
+    push(); // Creating rectangles that are linked to 2d Collide functions
     let fillNo = controlNo();
     fill(fillNo);
     rect(500, 500.3334, 1600/2 - 300, 790/4 - 33.34);
-    image(yesimg, 630, 521, 1600/3 - 275, 790/5 - 25);
+    image(yesimg, 630, 521, 1600/3 - 275, 790/5 - 25); // Image Files that displays what button does (Since this is an easteregg we meant to have them switched for a confusing time for the player)
     pop();
 
 
@@ -217,29 +217,29 @@ function controlNo() {
 function mousePressed() {
   if (state === "MainMenu"){
     if (hoverPlay) {
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
         jokeStart.play();
       }
       state = "gameStart";
     }
     else if (hoverControls) {
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       state = "controlSettings";
     }
     else if (hoverSecret) {
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       state = "secretMenu";
@@ -247,10 +247,10 @@ function mousePressed() {
   }
   else if (state === "controlSettings") {
     if (hoverBackControl){
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       state = "MainMenu";
@@ -258,33 +258,33 @@ function mousePressed() {
   }
   else if (state === "secretMenu") {
     if (hoverBackControl){
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       state = "MainMenu";
     }
     else if (hoverNo){
       if (jokeSound === "notActive") {
-        if (jokeSound === "notActive") {
+        if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
           clicksound.play();
         }
-        else if (jokeSound === "Active") {
+        else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
           jokeClick.play();
         }
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       jokeSound = "notActive";
     }
     else if (hoverYes){
-      if (jokeSound === "notActive") {
+      if (jokeSound === "notActive") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         clicksound.play();
       }
-      else if (jokeSound === "Active") {
+      else if (jokeSound === "Active") { // Plays sound and checks if the jokeSound is active or not for our easter egg noises
         jokeClick.play();
       }
       jokeSound = "Active";
