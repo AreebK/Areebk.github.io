@@ -5,7 +5,109 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+class Bullet {
+  constructor(x, y, dx, dy, theImage) {
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+    this.radius = 5;
+    this.offScreen = false;
+    this.imageToDisplay = theImage;
+  }
 
+  update() {
+    this.x += this.dx;
+    this.y += this.dy;
+    if (this.x >= width + this.radius || this.x <= 0 - this.radius || this.y >= height + this.radius || this.y <= 0 - this.radius) {
+      this.offScreen = true;
+    }
+  }
+
+  display() {
+    // fill(255);
+    // ellipse(this.x, this.y, this.radius, this.radius);
+    imageMode(CENTER);
+    image(this.imageToDisplay, this.x, this.y * 1.6);
+  }
+}
+
+class Ship {
+  constructor(x, y, theImage) {
+    this.x = x;
+    this.y = y;
+    this.imageToDisplay = theImage;
+    this.dx = 5;
+    this.dy = 5;
+    this.w = this.imageToDisplay.width;
+    this.h = this.imageToDisplay.height;
+    this.bulletArray = [];
+    this.isMovingRight = false;
+    this.isMovingLeft = false;
+  }
+
+  handleKeyPress() {
+    if (key === "a") {
+      this.isMovingLeft = true;
+    }
+    if (key === "d") {
+      this.isMovingRight = true;
+    }
+
+    if (key === " ") {
+      let someBullet = new Bullet(this.x, this.y, 0, -10, laserImg);
+      this.bulletArray.push(someBullet);
+    }
+  }
+
+  handleKeyRelease() {
+    if (key === "a") {
+      this.isMovingLeft = false;
+    }
+    if (key === "d") {
+      this.isMovingRight = false;
+    }
+  }
+
+  update() {
+    //move ship
+    if (this.isMovingRight) {
+      this.x += this.dx;
+    }
+    if (this.isMovingLeft) {
+      this.x -= this.dx;
+    }
+    if (this.x >= 1575){
+      this.x -= this.dx;
+    }
+    if (this.x <= 25){
+      this.x += this.dx;
+    }
+
+    //show the asteroids
+    for (let i = this.bulletArray.length - 1; i >= 0; i--) {
+      this.bulletArray[i].update();
+      this.bulletArray[i].display();
+      if (this.bulletArray[i].offScreen) {
+        this.bulletArray.splice(i, 1);
+      }
+    }
+  }
+
+  display() {
+    rectMode(CENTER);
+    fill(255, 255, 255);
+    rect(this.x, this.y + this.h / 2.2, 50, 70); //divide this.w/5
+    imageMode(CENTER);
+    image(this.imageToDisplay, this.x, this.y + this.h / 2.2, 50, 70);
+  }
+}
+
+
+let asteroids = []; // array to hold Asteroids objects
+let spaceShip;
+let shipImg, laserImg, aster1, aster2, aster3;
+let music, hplost, gameover, gunshot;
 let state, jokeSound, backgroundNoise;
 let canvasWidth, canvasHeight;
 let hoverPlay = false; // 2D Collide function that defaults the play button as false
@@ -17,7 +119,7 @@ let hoverNo = false; // 2D Collide function that defaults the No button as false
 let fillStart, fillControl, fillSecret, fillYes, fillNo;
 let mainMenuScreen, controlText;
 let backButtonControls;
-let playimg, backimg, controlimg, clicksound, secretimg, yesimg, noimg, jokeClick, jokeStart, jokeback, jokeshootsound, jokehitsound, jokediesound;
+let playimg, backimg, controlimg, clicksound, secretimg, yesimg, noimg, jokeClick, jokeStart, jokeback, jokeshootsound, jokehitsound, jokediesound, backgroundmusic, gunShot;
 
 function preload() {
   //Preloading every file from the png, to mp3 files
@@ -36,6 +138,11 @@ function preload() {
   jokeshootsound = loadSound("assets/jokeShoot.mp3");
   jokehitsound = loadSound("assets/jokehit.mp3");
   jokediesound = loadSound("assets/jokedie.mp3");
+  shipImg = loadImage("assets/ship.png");
+  laserImg = loadImage("assets/laser.png");
+  music = loadSound("assets/backgroundmusic.mp3");
+  gameover = loadSound("assets/GameOver.mp3");
+  gunshot = loadSound("assets/gunshot.mp3");
 }
 
 function setup() {
@@ -43,15 +150,20 @@ function setup() {
   state = "MainMenu"; // The State function defaults to the MainMenu
   canvasWidth = 1600;
   canvasHeight = 790;
+  spaceShip = new Ship(width / 2, height / 1.8, shipImg);
+  fill(255);
+  noStroke();
   jokeSound = "notActive"; // Defaults the Joke Sound Affects to "notActive" and can be accesed through EasterEgg from the Game
   clicksound.setVolume(0.1);
-  jokeClick.setVolume(1.0);
+  jokeClick.setVolume(1.6);
   jokeStart.setVolume(0.4);
   jokeback.setVolume(0.23);
   jokeshootsound.setVolume(0.5);
   jokehitsound.setVolume(0.5);
   jokediesound.setVolume(0.5);
-  jokeback.loop(); // The Joke Background music ("As of now cannot function unless you uncomment this loop and comment out the background loop")       
+  // jokeback.loop(); // The Joke Background music ("As of now cannot function unless you uncomment this loop and comment out the background loop")
+  music.setVolume(0.25);
+  music.loop();
 }
 
 
@@ -66,8 +178,29 @@ function draw() {
     image(secretimg, 0, 0, 1600, 790);
   }
   else if (state === "gameStart") { // When the Game Start setting is true, it displays the game letting you play around
-    background(255, 0, 0);
+    background(0);
 
+  }
+  if (state === "gameStart"){
+    detect();
+    spaceShip.update();
+    spaceShip.display();
+    collisionDetect =  collidePointRect(asteroids.posX, asteroids.posY, spaceShip.x, spaceShip.y, 50, 70);
+    if (state === "gameOver"){
+      background(255);
+    }
+
+
+    let t = frameCount / 60; // update time
+
+    // create a random number of Asteroids each frame
+    for (let i = 0.5; i < random(0.51); i++) {
+      asteroids.push(new Asteroid()); // append Asteroids object
+    }
+    for (let aster of asteroids) {
+      aster.update(t);
+      aster.display();
+    }
   }
 
   mainMenu();
@@ -212,6 +345,51 @@ function controlNo() {
     return fillNo;
   }
 }
+
+function Asteroid() {
+  // initialize coordinates
+  this.posX = random(0, width);
+  this.posY = random(-50, 0);
+  this.initialangle = random(0, 2 * PI);
+  this.size = random(40, 40);
+
+  // chosen so the Asteroids are uniformly spread out in area
+  this.radius = sqrt(random(pow(width / 2, 2)));
+
+  this.update = function(time) {
+    let w = 0.5; // angular speed
+    let angle = w * time + this.initialangle;
+    this.posY += pow(this.size, 0.01);
+
+    // delete Asteroids if past end of screen
+    if (this.posY > height) {
+      let index = asteroids.indexOf(this);
+      asteroids.splice(index, 1);
+    }
+  };
+
+  this.display = function() {
+    ellipse(this.posX, this.posY, this.size);
+  };
+}
+
+function detect() {
+  if (collisionDetect){
+    state = "gameover";
+  }
+}
+
+
+
+
+function keyPressed() {
+  spaceShip.handleKeyPress();
+}
+
+function keyReleased() {
+  spaceShip.handleKeyRelease();
+}
+
 
 
 function mousePressed() {
